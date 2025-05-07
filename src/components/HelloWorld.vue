@@ -7,11 +7,14 @@
    <br>
    <v-text-field label="What do you do?"  v-model="description" ></v-text-field>
    <v-text-field label="How long it takes?" v-model="duration" ></v-text-field>
-   <v-btn @click="addToDo" color="primary">Add</v-btn>
-   <v-btn @click="deleteToDo" color="primary">Delete</v-btn>
+   <v-btn @click="addToDo" prepend-icon="mdi-plus">Add</v-btn>
+  
   <v-table>
     <thead>
       <tr>
+        <th class="text-left">
+          No:
+        </th>
         <th class="text-left">
           Description
         </th>
@@ -29,13 +32,15 @@
     <tbody>
       <tr
         v-for="todo in list"
-        :key="todo.des"
+        :key="todo.id"
       >
+      <td>{{ todo.id }}</td>
         <td>{{ todo.des}}</td>
         <td>{{ todo.time}}</td>
         <td>{{ todo.date }}</td>
         <td v-if=" todo.time<=2 ">Active</td>
         <td v-else>Tried</td>
+        <td> <v-btn @click="deleteToDo(todo)" append-icon="mdi-delete">Delete</v-btn></td>
       </tr>
     </tbody>
   </v-table>
@@ -54,8 +59,8 @@ export default {
     flag:true,
     name:"",
     list:[
-      {des:"Learing Vue",time:2, date:new Date().toDateString()},
-      {des: "Shopping", time:3, date: new Date().toDateString()}
+      {id:1, des:"Learing Vue",time:2, date:new Date().toDateString()},
+      {id:2, des: "Shopping", time:3, date: new Date().toDateString()}
     ],
     description:"",
     duration:0
@@ -66,10 +71,11 @@ export default {
      this.flag=!this.flag 
     },
     addToDo(){
-      this.list.push({des:this.description, time:this.duration, date: new Date().toDateString()})
+      this.list.push({id:this.list.length+1, des:this.description, time:this.duration, date: new Date().toDateString()})
     },
-    deleteToDo(){
-      this.list.pop();
+    deleteToDo(todo){
+      //this.list.pop();
+     this.list= this.list.filter( td => td.id !=todo.id)
 
     }
   }
